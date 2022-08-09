@@ -1,0 +1,46 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Test</title>
+</head>
+
+<body>
+  <form id="uploadform" action="/uploadImages" method="post" enctype="multipart/form-data">
+    <input type="file" id="file" name="file" multiple data-max="2" accept="image/jpg, image/jpeg, image/png" >
+    <label for="title">Title:</label><br>
+    <input type="text" id="title" name="title" required>
+    <label for="slide_type">Slide Type:</label><br>
+    <input type="text" id="slide_type" name="slide_type" value="">  
+    <label for="description">Description:</label><br>
+    <input type="text" id="description" name="description" value="">  
+    <label for="content">Content:</label><br>
+    <input type="text" id="content" name="content" value="">
+    <input type="submit" id="submit">
+  </form>
+
+  <textarea id="box">Here should be data returned from FastAPI response</textarea>
+
+  <script>
+    const box = document.getElementById("box");
+
+    uploadform.onsubmit = async (e) => {
+      e.preventDefault();
+
+      let res = await fetch("/slides/create/", {
+        method: "POST",
+        body: new FormData(uploadform),
+      });
+
+      if (res.ok) {
+        let result = await res.text();
+        box.innerHTML = result;
+      } else {
+        box.innerHTML = `Response error: ${res.status}`;
+      };
+    };
+  </script>
+</body>
+</html>
