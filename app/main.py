@@ -8,7 +8,7 @@ from fastapi.responses import HTMLResponse
 from app.routers import slides
 
 from .dependencies import get_query_token, get_token_header
-from .internal import admin
+# from .internal import admin
 from .routers import items, users, data, slides
 
 from app.core.config import settings
@@ -37,16 +37,12 @@ def index(request: Request):
     return templates.TemplateResponse("upload_page.html", {"request": request})
 
 
-app.include_router(users.router)
-app.include_router(items.router)
+# app.include_router(users.router)
+# app.include_router(items.router)
 app.include_router(slides.router)
-app.include_router(data.router)
 app.include_router(
-    admin.router,
-    prefix="/admin",
-    tags=["admin"],
-    dependencies=[Depends(get_token_header)],
-    responses={418: {"description": "I'm a teapot"}},
+    data.router,
+    prefix="/data",
 )
 
 

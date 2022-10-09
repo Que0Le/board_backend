@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from typing import Optional
+from typing import Optional, List
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi import File, Form, UploadFile
@@ -13,7 +13,7 @@ from ..utilities import strings
 router = APIRouter()
 
 
-@router.get("/slides/", response_model=list[schemas.Slide], tags=["slides"])
+@router.get("/slides/", response_model=List[schemas.Slide], tags=["slides"])
 def read_slides(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     slides = crud.get_slides(db, skip=skip, limit=limit)
     return slides
